@@ -9,7 +9,9 @@ const app = express();
 app.use(formidable());
 app.use(cors());
 
-app.get("/", async (req, res) => {
+// Faire la route get Characters
+
+app.get("/comics", async (req, res) => {
   try {
     // Création du timestamp
     const date = new Date();
@@ -19,17 +21,19 @@ app.get("/", async (req, res) => {
     const privateKey = process.env.PRIVATE_KEY;
     // Création du hash crypté
     const hash = md5(timestamp + privateKey + publicKey);
-    console.log(hash);
     // url pour les requêtes vers l'API Marvel
     const url = `https://gateway.marvel.com/v1/public/comics?ts=${timestamp}&apikey=${publicKey}&hash=${hash}`;
 
+    // --------- Requête Axios ---------
     const response = await axios.get(url);
-    res.status(200).json(response.data);
-    console.log(response);
+    // console.log(response.data.data);
+    res.status(200).json(response.data.data);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 });
+
+// Faire la route get pour CharactersIdComics
 
 app.all("*", (req, res) => {
   res.status(404).json({ message: error.message });
