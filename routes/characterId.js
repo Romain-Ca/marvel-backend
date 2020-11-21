@@ -3,8 +3,7 @@ const router = express.Router();
 const md5 = require("md5");
 const axios = require("axios");
 
-router.get("/comics", async (req, res) => {
-  // console.log(req.query);
+router.get("/characters/:id", async (req, res) => {
   try {
     // Création du timestamp
     const date = new Date();
@@ -14,22 +13,10 @@ router.get("/comics", async (req, res) => {
     const privateKey = process.env.PRIVATE_KEY;
     // Création du hash crypté
     const hash = md5(timestamp + privateKey + publicKey);
-    // Reception des query du front
-    const { page, title } = req.query;
-    const limit = 100;
-    let offset = page * 100 - 100;
-    let apiFilter = "title";
-    let queryFilters = `orderBy=${apiFilter}&ts=${timestamp}&apikey=${publicKey}&hash=${hash}&limit=${limit}&offset=${offset}`;
-    let searchComics;
-
-    if (title !== "") {
-      searchComics = `&titleStartsWith=${title}`;
-    }
-
+    const params = req.params.id;
     // url pour les requêtes vers l'API Marvel
-    const url =
-      `https://gateway.marvel.com/v1/public/comics?${queryFilters}` +
-      searchComics;
+    const url = `https://gateway.marvel.com/v1/public/characters/${params}?ts=${timestamp}&apikey=${publicKey}&hash=${hash}`;
+    // console.log(req.params.id);
     // --------- Requête Axios ---------
     const response = await axios.get(url);
     // console.log(response.data);

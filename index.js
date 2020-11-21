@@ -8,11 +8,14 @@ app.use(formidable());
 app.use(cors());
 
 // Import Route
-
 const charactersRoute = require("./routes/characters");
 app.use(charactersRoute);
 const comicsRoute = require("./routes/comics");
 app.use(comicsRoute);
+const characterIdRoute = require("./routes/characterId");
+app.use(characterIdRoute);
+const comicIdRoute = require("./routes/comicId");
+app.use(comicIdRoute);
 
 app.all("*", (req, res) => {
   res.status(404).json({ message: "All routes" });
