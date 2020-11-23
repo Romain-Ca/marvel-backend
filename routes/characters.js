@@ -3,7 +3,7 @@ const router = express.Router();
 const md5 = require("md5");
 const axios = require("axios");
 
-router.get("/characters", async (req, res) => {
+router.get("/", async (req, res) => {
   // console.log(req.query);
   try {
     // Création du timestamp
